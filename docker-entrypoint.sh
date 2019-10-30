@@ -1,11 +1,15 @@
 #!/bin/sh
 
-#. ./.env
-
 if [ -z "$FLASK_RUN_PORT" ]; then
-    echo "FLASK_RUN_PORT undefined."
-    exit 1
+    echo "FLASK_RUN_PORT undefined." && exit 1
 fi
+
+for fn in ibm-credentials.env news_apikey; do
+  fullname=api/resources/$fn
+  if ! [ -f $fullname ]; then
+    echo "Missing file: $fullname" && exit 1
+  fi
+done
 
 python_path=$(which python)
 
